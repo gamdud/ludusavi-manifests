@@ -6,27 +6,35 @@ import yaml
 
 
 PRIMARY_MANIFEST_URL = "https://raw.githubusercontent.com/mtkennerly/ludusavi-manifest/refs/heads/master/data/manifest.yaml"
-NON_STEAM_PATH = Path("non-steam-manifest.yml")
+NON_STEAM_PATH = Path("non-legit-win-manifest.yml")
 NON_STEAM_TEMPLATE = """
 ---
 "": &template
   files:
-    "<root>/<storeGameId>/pfx/drive_c/users/Public/Documents":
-      tags:
-        - save
-    "<root>/<storeGameId>/pfx/drive_c/users/steamuser/Documents":
-      tags:
-        - save
-    "<root>/<storeGameId>/pfx/drive_c/users/steamuser/Appdata":
-      tags:
-        - save
-    "<root>/<storeGameId>/pfx/drive_c/users/steamuser/Saved Games":
+    "<winPublic>/Documents/Steam/RUNE/<storeGameId>":
       tags:
         - save
       when:
-        - os: linux
-""".strip()
+        - os: windows
+    "<winPublic>/Documents/Steam/CODEX/<storeGameId>":
+      tags:
+        - save
+      when:
+        - os: windows
+    "<winAppData>/Goldberg UplayEmu Saves/<storeGameId>":
+      tags:
+        - save
+      when:
+        - os: windows
+    "<winAppData>/Goldberg SteamEmu Saves/<storeGameId>":
+      tags:
+        - save
+      when:
+        - os: windows
 
+""".strip()
+# Todo: Above ludusavi entries probably rely on there being a
+# "store" defined somewhere. Not sure how the store is determined.
 
 def main() -> None:
     manifest_content = download_primary_manifest()
